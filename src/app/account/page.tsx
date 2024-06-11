@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { JSX, SVGProps } from "react";
 import validator from 'validator';
 import Image from "next/image"
@@ -31,6 +31,14 @@ let tokenString: string | null;
 export default function Account() {
     const router = useRouter();
 
+    // Check if user is already logged-in
+    useEffect(() => {
+        const authToken = localStorage.getItem('token');
+        if (authToken) {
+            router.push('/dashboard');
+        }
+    }, []);
+
     // Login states
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -46,16 +54,16 @@ export default function Account() {
     async function handleLogin(event: { preventDefault: () => void; }) {
         event.preventDefault()
 
-        await fetch('http://localhost:1337/api/auth/local', {
+        await fetch('http://localhost:5500/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
         })
             .then((data) => data.json())
-            .then((token) => {
-                if (token.jwt) {
-                    localStorage.setItem('token', JSON.stringify(token.jwt));
-                    router.push('/dashboard')
+            .then((response) => {
+                if (response.status === 200) {
+                    localStorage.setItem('token', JSON.stringify(response.token));
+                    router.push('/dashboard');
                 } else {
                     setLoginError(true);
                 }
@@ -67,17 +75,17 @@ export default function Account() {
         event.preventDefault()
 
         if (validator.isEmail(regEmail)) {
-            await fetch('http://localhost:1337/api/auth/local/register', {
+            await fetch('http://localhost:5500/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: regEmail, password: regPassword }),
             })
                 .then((data) => data.json())
-                .then((token) => {
-                    if (token) {
+                .then((response) => {
+                    if (response.status === 200) {
                         setRegEmail('');
                         setRegPassword('');
-                        router.push('/account')
+                        router.push('/dashboard');
                     } else {
                         setRegisterError(true);
                     }

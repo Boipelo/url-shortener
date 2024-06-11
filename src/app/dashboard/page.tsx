@@ -70,7 +70,7 @@ export default function Component() {
             prefetch={false}
           >
             <LinkIcon className="h-6 w-6 fill-gray-900 dark:fill-gray-50" />
-            <span>URL Shortener</span>
+            <span>URL Shortener Dashboard</span>
           </Link>
           <Button
             onClick={fetchLinks}
@@ -93,13 +93,12 @@ export default function Component() {
           </p>
         </div>
         <div className="w-full max-w-md">
-          <form
-            className="flex space-x-2"
-          >
+          <form className="flex space-x-2">
             <Input
               type="text"
-              name="longUrl"
-              placeholder="Enter your long URL"
+              name="originalUrl"
+              required
+              placeholder="Enter URL to shorten"
               className="flex-1 rounded-lg border border-gray-200 bg-white px-4 py-2 text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900 dark:border-gray-800 dark:bg-gray-950 dark:text-gray-50 dark:focus:border-gray-50 dark:focus:ring-gray-50"
             />
             <Button
@@ -114,7 +113,7 @@ export default function Component() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-gray-500 dark:text-gray-400">Long URL</TableHead>
+                <TableHead className="text-gray-500 dark:text-gray-400">Original URL</TableHead>
                 <TableHead className="text-gray-500 dark:text-gray-400">Short URL</TableHead>
                 <TableHead className="text-gray-500 dark:text-gray-400">Actions</TableHead>
               </TableRow>
