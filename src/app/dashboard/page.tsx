@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect, JSX, SVGProps } from "react"
+import { redirect } from 'next/navigation'
 import Link from "next/link"
 import { Button } from "../../components/ui/button"
 import { useRouter } from 'next/navigation'
@@ -40,10 +41,13 @@ export default function Dashboard() {
   const [updateOrigLink, setUpdateLink] = useState<string>('');
 
   useEffect(() => {
-    fetchLinks()
-    // token = localStorage.getItem('token');
-    // userID = localStorage.getItem('profile');
+    token = localStorage.getItem('token');
+    userID = localStorage.getItem('profile');
 
+    if (!token) {
+      redirect("/account");
+    }
+    fetchLinks()
     if (links.length === 0) {
       setEmpty(false);
     } else { setEmpty(true); }
@@ -63,7 +67,6 @@ export default function Dashboard() {
         .then(async res => {
           if (res.status === 200) {
             const values = Object.values(res.data);
-            console.log(res)
             setLinks(values);
           }
         });
@@ -225,7 +228,7 @@ export default function Dashboard() {
                       </Link>
                     </TableCell>
                     <TableCell className="py-4">
-                        {link.clicks}
+                      {link.clicks}
                     </TableCell>
                     <TableCell className="py-4 flex items-center gap-2">
                       <Sheet>
