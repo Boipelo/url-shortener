@@ -23,6 +23,7 @@ import {
     TabsTrigger,
 } from "../../components/ui/tabs"
 
+// Declared here to avoid "variable is used before it is assigned" error.
 let tokenString: string | null;
 if (typeof window !== 'undefined') {
     tokenString = localStorage.getItem('token');
@@ -50,7 +51,6 @@ export default function Account() {
 
     let [loginError, setLoginError] = useState(false);
     let [registerError, setRegisterError] = useState(false);
-    let [registrationComplete, setRegistrationComplete] = useState(false);
 
     async function handleLogin(event: { preventDefault: () => void; }) {
         event.preventDefault()
@@ -110,10 +110,7 @@ export default function Account() {
                             <p className='mx-auto text-xl text-red-600'>Invalid email or password.</p>
                         }
                         {registerError.toString() === 'true' &&
-                            <p className='mx-auto text-xl text-red-600'>Please fill in all fields.</p>
-                        }
-                        {registrationComplete.toString() === 'true' &&
-                            <p className='mx-auto text-xl text-red-600'>You may now login to your account.</p>
+                            <p className='mx-auto text-xl text-red-600'>Please provide valid email address.</p>
                         }
                         <Link
                             href="/"
