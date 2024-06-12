@@ -24,15 +24,16 @@ import {
 } from "../../components/ui/tabs"
 
 let tokenString: string | null;
-// if (typeof window !== 'undefined') {
-//     tokenString = localStorage.getItem('token');
-// }
+if (typeof window !== 'undefined') {
+    tokenString = localStorage.getItem('token');
+}
 
 export default function Account() {
     const router = useRouter();
 
-    // Check if user is already logged-in
+    // Check if user is already logged-in and redirect them to the dashboard.
     useEffect(() => {
+        tokenString = localStorage.getItem('token');
         const authToken = localStorage.getItem('token');
         if (authToken) {
             router.push('/dashboard');

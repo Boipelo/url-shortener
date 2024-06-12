@@ -5,6 +5,8 @@ import { JSX, SVGProps, useState, useEffect } from "react";
 
 export default function Header() {
 
+  // Used to change button functionality in the header. If user already logged-in then
+  // use button that will redirect them to the dashboard.
   const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
