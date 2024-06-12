@@ -16,12 +16,6 @@ export default function Home() {
               Our URL shortener service helps you create clean, branded links that are easy to share.
             </p>
           </div>
-          <div className="w-full max-w-md">
-            <form className="flex space-x-2">
-              <Input type="text" placeholder="Enter your long URL" className="flex-1" />
-              <Button type="submit">Shorten</Button>
-            </form>
-          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-5xl">
             <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm space-y-4">
               <LinkIcon className="h-8 w-8 text-gray-500 dark:text-gray-400" />

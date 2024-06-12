@@ -54,7 +54,7 @@ export default function Account() {
     async function handleLogin(event: { preventDefault: () => void; }) {
         event.preventDefault()
 
-        await fetch('http://localhost:5500/api/auth/login', {
+        await fetch('http://urlshortener-api-eta.vercel.app/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
@@ -76,7 +76,7 @@ export default function Account() {
         event.preventDefault()
 
         if (validator.isEmail(regEmail)) {
-            await fetch('http://localhost:5500/api/auth/register', {
+            await fetch('http://urlshortener-api-eta.vercel.app/api/auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email: regEmail, password: regPassword }),
