@@ -5,10 +5,10 @@ import { JSX, SVGProps, useState, useEffect } from "react";
 
 export default function Header() {
 
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    const authToken = localStorage.getItem('token');
+    const authToken: string | null = localStorage.getItem('token');
     if (authToken) {
       setLoggedIn(true);
     }
@@ -39,16 +39,17 @@ export default function Header() {
           </Button>
           }
 
-          {isLoggedIn && <Button
-            variant={'outline'}
-            className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
-          >
-            <Link
-              href="/dashboard"
+          {isLoggedIn &&
+            <Button
+              variant={'outline'}
+              className="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
             >
-              Dashboard
-            </Link>
-          </Button>
+              <Link
+                href="/dashboard"
+              >
+                Dashboard
+              </Link>
+            </Button>
           }
 
         </div>
@@ -73,51 +74,6 @@ function LinkIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
     >
       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-    </svg>
-  )
-}
-
-
-function RefreshCwIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-      <path d="M21 3v5h-5" />
-      <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-      <path d="M8 16H3v5" />
-    </svg>
-  )
-}
-
-
-function TrashIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M3 6h18" />
-      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
-      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
     </svg>
   )
 }

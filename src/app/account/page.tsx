@@ -62,7 +62,8 @@ export default function Account() {
             .then((data) => data.json())
             .then((response) => {
                 if (response.status === 200) {
-                    localStorage.setItem('token', JSON.stringify(response.token));
+                    localStorage.setItem('token', response.token);
+                    localStorage.setItem('profile', response.profile);
                     router.push('/dashboard');
                 } else {
                     setLoginError(true);
@@ -85,6 +86,8 @@ export default function Account() {
                     if (response.status === 200) {
                         setRegEmail('');
                         setRegPassword('');
+                        localStorage.setItem('token', JSON.stringify(response.token));
+                        localStorage.setItem('profile', JSON.stringify(response.profile));
                         router.push('/dashboard');
                     } else {
                         setRegisterError(true);
