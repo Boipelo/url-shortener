@@ -50,7 +50,7 @@ export default function Dashboard() {
       redirect("/account");
     }
 
-    fetchLinks()
+    fetchLinks();
 
     // If links array is empty set empty to true and hide data table in UI.
     if (links.length === 0) {
@@ -61,19 +61,14 @@ export default function Dashboard() {
   // Retrieve all shortened links assigned to the users ID.
   const fetchLinks = async () => {
     try {
-      await fetch("http://localhost:5500/api/links", {
+      await fetch("http://localhost:8001/api.php", {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ userID })
+        body: JSON.stringify({ userID, action: "all" })
       })
         .then(async data => await data.json())
         .then(async res => {
           if (res.status === 200) {
-            const values = Object.values(res.data);
-            setLinks(values);
+            setLinks(res.data);
           }
         });
     } catch (error) {
@@ -85,18 +80,14 @@ export default function Dashboard() {
     event.preventDefault();
 
     try {
-      await fetch("http://localhost:5500/api/shorten", {
+      await fetch("http://localhost:8001/api.php", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ originalUrl: newLink, userID }),
+        body: JSON.stringify({ originalUrl: newLink, userID, action: "shorten" }),
       })
         .then(async data => await data.json())
         .then(async res => {
           if (res.status === 200) {
-            setLinks([...links, res.data])
+            await fetchLinks();
           }
         })
     } catch (error) {
@@ -113,13 +104,9 @@ export default function Dashboard() {
       return;
     }
     try {
-      await fetch(`http://localhost:5500/api/${UrlID}`, {
+      await fetch(`http://localhost:8001/api.php?shortUrl=${UrlID}`, {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ originalUrl: updatedLink }),
+        body: JSON.stringify({ newUrl: updatedLink, action: "update" }),
       })
         .then(async data => await data.json())
         .then(async res => {
@@ -136,12 +123,9 @@ export default function Dashboard() {
   }
   const deleteLink = async (UrlID: string) => {
     try {
-      await fetch(`http://localhost:5500/api/${UrlID}`, {
+      await fetch(`http://localhost:8001/api.php?shortUrl=${UrlID}`, {
         method: "DELETE",
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
+        body: JSON.stringify({action: "delete"})
       })
       setLinks(links.filter((link: any) => link.shortUrl !== UrlID))
     } catch (error) {
@@ -198,6 +182,7 @@ export default function Dashboard() {
             <Input
               type="text"
               name="originalUrl"
+              defaultValue={newLink}
               onChange={e => setNewLink(e.target.value)}
               required
               placeholder="Enter URL to shorten"
@@ -218,26 +203,26 @@ export default function Dashboard() {
                 <TableRow>
                   <TableHead className="text-gray-500 dark:text-gray-400">Original URL</TableHead>
                   <TableHead className="text-gray-500 dark:text-gray-400">Short URL</TableHead>
-                  <TableHead className="text-gray-500 dark:text-gray-400">Clicks</TableHead>
+                  {/* <TableHead className="text-gray-500 dark:text-gray-400">Clicks</TableHead> */}
                   <TableHead className="text-gray-500 dark:text-gray-400">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {links.map((link: any) => (
-                  <TableRow key={link._id} className="border-b border-gray-200 dark:border-gray-800">
+                  <TableRow key={link.id} className="border-b border-gray-200 dark:border-gray-800">
                     <TableCell className="py-4 text-gray-900 dark:text-gray-50">{link.originalUrl}</TableCell>
                     <TableCell className="py-4">
                       <Link
-                        href={`http://localhost:5500/api/${link.shortUrl}`}
+                        href={`http://localhost:8001/api.php?action=redirect&&shortUrl=${link.shortUrl}`}
                         target="_blank"
                         className="text-blue-500 hover:underline dark:text-blue-400"
                       >
                         {link.shortUrl}
                       </Link>
                     </TableCell>
-                    <TableCell className="py-4">
-                      {link.clicks}
-                    </TableCell>
+                    {/* <TableCell className="py-4">
+                      {link?.clicks}
+                    </TableCell> */}
                     <TableCell className="py-4 flex items-center gap-2">
                       <Sheet>
                         <SheetTrigger asChild>

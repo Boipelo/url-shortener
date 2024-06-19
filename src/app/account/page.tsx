@@ -55,13 +55,13 @@ export default function Account() {
     async function handleLogin(event: { preventDefault: () => void; }) {
         event.preventDefault()
 
-        await fetch('http://localhost:5500/api/auth/login', {
+        await fetch('http://localhost:8001/api.php', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
+            body: JSON.stringify({ email, password, action: "login" }),
         })
             .then((data) => data.json())
             .then((response) => {
+                console.log(response);
                 if (response.status === 200) {
                     localStorage.setItem('token', response.token);
                     localStorage.setItem('profile', response.profile);
@@ -77,10 +77,9 @@ export default function Account() {
         event.preventDefault()
 
         if (validator.isEmail(regEmail)) {
-            await fetch('http://localhost:5500/api/auth/register', {
+            await fetch('http://localhost:8001/api.php', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: regEmail, password: regPassword }),
+                body: JSON.stringify({ email: regEmail, password: regPassword, action: "register" }),
             })
                 .then((data) => data.json())
                 .then((response) => {
